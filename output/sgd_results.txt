@@ -1,0 +1,18 @@
+SGD Model Tuning Results
+========================
+Alpha: 0.0001
+Validation MSE: 2441.052
+Validation R2: 0.577
+
+Alpha: 0.001
+Validation MSE: 2441.019
+Validation R2: 0.577
+
+Alpha: 0.01
+Validation MSE: 2440.874
+Validation R2: 0.577
+
+Alpha: 0.1
+Validation MSE: 2458.592
+Validation R2: 0.574
+

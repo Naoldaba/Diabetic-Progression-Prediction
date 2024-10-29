@@ -37,3 +37,6 @@ To get started, follow these steps to clone the repository and install the requi
 git clone https://github.com/Naoldaba/Diabetic-Progression-Prediction.git
 cd Diabetic-Progression-Prediction
 ```
+
+## Comprehensive Report 
+https://docs.google.com/document/d/1lPWSmDehQ5Kg7kRnBjG9yeYR-j7fPJw4Vds-UXjOwSs/edit?usp=sharing

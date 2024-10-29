@@ -1,0 +1,6 @@
+Linear Regression Model Evaluation
+==================================
+Validation MSE: 2415.692
+Validation R2: 0.581
+Test MSE: 3245.611
+Test R2: 0.439

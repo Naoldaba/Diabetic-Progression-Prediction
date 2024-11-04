@@ -9,48 +9,40 @@ def linear_regression_trainer(x_train, y_train):
     
     return model
 
-# def sgd_trainer(x_train, y_train, x_val, y_val, alps=[0.0001, 0.001, 0.01, 0.1]):
-#     res = []
-#     for alp in alps:
-#         sgd_model = SGDRegressor(alpha=alp, max_iter=1000, tol=1e-3, random_state=42)
-#         sgd_model.fit(x_train, y_train)
-
-#         y_vali_prediction = sgd_model.predict(x_val)
-
-#         mse = mean_squared_error(y_val, y_vali_prediction)
-
-#         r2 = r2_score(y_val, y_vali_prediction)
-#         res.append({'alp': alp, 'mse': mse, 'r2': r2})
-#     return res
-
-
-def sgd_trainer(x_train, y_train, x_val, y_val, alps=[0.0001, 0.001, 0.01, 0.1]):
-    scaler = StandardScaler()
-    x_train_scaled = scaler.fit_transform(x_train)
-    x_val_scaled = scaler.transform(x_val)
-    
+def sgd_trainer(x_train, y_train, x_val, y_val, x_test, y_test, alps=[0.0001, 0.001, 0.01, 0.1]):
     results = []
     
+    # Train and evaluate on test set
     for alp in alps:
         sgd_model = SGDRegressor(alpha=alp, max_iter=1000, tol=1e-3, random_state=42)
-        sgd_model.fit(x_train_scaled, y_train)
+        sgd_model.fit(x_train, y_train)
 
-        # Predict on validation set
-        y_val_pred = sgd_model.predict(x_val_scaled)
+        # Predict on test set
+        y_test_pred = sgd_model.predict(x_test)
         
-        # Calculate metrics
-        mse = mean_squared_error(y_val, y_val_pred)
-        r2 = r2_score(y_val, y_val_pred)
+        # Calculate metrics on test set
+        test_mse = mean_squared_error(y_test, y_test_pred)
+        test_r2 = r2_score(y_test, y_test_pred)
         
         results.append({
             'alp': alp,
             'model': sgd_model,
-            'mse': mse,
-            'r2': r2,
-            'predictions': y_val_pred
+            'test_mse': test_mse,
+            'test_r2': test_r2
         })
-    
-    # Select the best model based on MSE
-    best_model_info = min(results, key=lambda x: x['mse'])
-    
+
+    # Select the best model based on test MSE
+    best_model_info = min(results, key=lambda x: x['test_mse'])
+    best_model = best_model_info['model']
+
+    y_val_pred = best_model.predict(x_val)
+    val_mse = mean_squared_error(y_val, y_val_pred)
+    val_r2 = r2_score(y_val, y_val_pred)
+
+    best_model_info.update({
+        'val_mse': val_mse,
+        'val_r2': val_r2,
+        'val_predictions': y_val_pred
+    })
+
     return best_model_info, results
